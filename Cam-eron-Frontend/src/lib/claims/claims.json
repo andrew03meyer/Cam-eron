@@ -1,0 +1,54 @@
+[
+    {
+        "id": 1,
+        "answers": {
+            "driver": "yes",
+            "vehicle_stationary": "no",
+            "public_road": "yes",
+            "car_park": "no",
+            "junction": "no",
+            "motorway": "yes",
+            "dark": "no",
+            "weather_affecting_visibility": "no",
+            "road_wet_or_icy": "no",
+            "roadworks": "no",
+            "another_vehicle": "yes",
+            "more_than_one_vehicle": "no",
+            "other_vehicle_stationary": "no",
+            "other_vehicle_commercial": "no",
+            "pedestrian": "no",
+            "cyclist": "no",
+            "animal": "no",
+            "stationary_object": "no",
+            "rear_end_shunt": "yes",
+            "head_on": "no",
+            "side_on": "no"
+        }
+    },
+    {
+        "id": 2,
+        "answers": {
+            "driver": "no",
+            "vehicle_stationary": "yes",
+            "public_road": "yes",
+            "car_park": "no",
+            "junction": "yes",
+            "motorway": "no",
+            "dark": "yes",
+            "weather_affecting_visibility": "yes",
+            "road_wet_or_icy": "yes",
+            "roadworks": "no",
+            "another_vehicle": "yes",
+            "more_than_one_vehicle": "no",
+            "other_vehicle_stationary": "no",
+            "other_vehicle_commercial": "yes",
+            "pedestrian": "no",
+            "cyclist": "no",
+            "animal": "no",
+            "stationary_object": "no",
+            "rear_end_shunt": "no",
+            "head_on": "no",
+            "side_on": "yes"
+        }
+    }
+]
