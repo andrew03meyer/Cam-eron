@@ -1,7 +1,4 @@
 import { useState } from "react";
-// import reactLogo from "./assets/react.svg";
-// import viteLogo from "/vite.svg";
-// import { Routes } from "react-router"
 import "./App.css";
 import { CardContainer } from "./components/Card-Container"; import Profile from "./components/Profile";
 import Claim from "./components/Claim"
@@ -9,35 +6,38 @@ import EditClaim from "./components/EditClaim"
 
 
 function App() {
-  const [count, setCount] = useState(0);
-  let [newClaim, setNewClaim] = useState(false);
-  let [editClaim, setEditClaim] = useState(false);
+  let [newClaimBool, setNewClaim] = useState(false);
+  let [editClaimBool, setEditClaim] = useState(false);
+  let [claimIdValue, setClaimId] = useState(0)
 
   const toggleNewClaim = () => {
-    setNewClaim(!newClaim)
-    if (editClaim) {
-      setEditClaim(!editClaim)
+    setNewClaim(!newClaimBool)
+    if (editClaimBool) {
+      setEditClaim(!editClaimBool)
     }
-    console.log(newClaim)
+    console.log(newClaimBool)
   }
 
-  const toggleEditClaim = () => {
-    setEditClaim(!editClaim)
-    if (newClaim) {
-      setNewClaim(!newClaim)
+  const toggleEditClaim = (passedClaimId) => {
+    setEditClaim(!editClaimBool)
+    if (newClaimBool) {
+      setNewClaim(!newClaimBool)
     }
-    console.log(editClaim)
+    if (editClaimBool) {
+      setClaimId(passedClaimId)
+    }
+    console.log(passedClaimId)
+    console.log(editClaimBool)
   }
 
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Car-Fish</h1>
-      <div>
-        <CardContainer />
-        {!newClaim && !editClaim && <Profile newCaseProp={toggleNewClaim} editClaim={toggleEditClaim} />}
-        {newClaim && !editClaim && <Claim newCaseProp={toggleNewClaim} />}
-        {editClaim && <EditClaim setEditClaim={toggleEditClaim} />}
+      <h1 className="text-3xl font-bold w-full text-center text-shadow-lg">Car-Fish</h1>
+      <div className="flex flex-row w-full">
+        {!newClaimBool && !editClaimBool && <Profile newCaseProp={toggleNewClaim} editClaim={toggleEditClaim} />}
+        {newClaimBool && !editClaimBool && <CardContainer />}
+        {editClaimBool && <EditClaim claimId={claimIdValue} setEditClaim={toggleEditClaim} />}
 
       </div>
     </>
