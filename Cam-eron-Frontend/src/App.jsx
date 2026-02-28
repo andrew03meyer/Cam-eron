@@ -3,7 +3,7 @@ import { useState } from "react";
 // import viteLogo from "/vite.svg";
 // import { Routes } from "react-router"
 import "./App.css";
-import Profile from "./components/Profile";
+import { CardContainer } from "./components/Card-Container"; import Profile from "./components/Profile";
 import Claim from "./components/Claim"
 import EditClaim from "./components/EditClaim"
 
@@ -32,7 +32,9 @@ function App() {
 
   return (
     <>
+      <h1 className="text-3xl font-bold">Car-Fish</h1>
       <div>
+        <CardContainer />
         {!newClaim && !editClaim && <Profile newCaseProp={toggleNewClaim} editClaim={toggleEditClaim} />}
         {newClaim && !editClaim && <Claim newCaseProp={toggleNewClaim} />}
         {editClaim && <EditClaim setEditClaim={toggleEditClaim} />}
