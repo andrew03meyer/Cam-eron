@@ -99,6 +99,18 @@
                 },
                 "other_vehicle_stationary": "no",
                 "other_vehicle_commercial": "no"
+            },
+            "6": {
+                "img": "",
+                "date": "",
+                "brief": "",
+                "status": "",
+                "car_park": "no",
+                "motorway": "no",
+                "junction": "no",
+                "another_vehicle": "no",
+                "other_vehicle_stationary": "no",
+                "other_vehicle_commercial": "no"
             }
         },
         "fiesta": {
