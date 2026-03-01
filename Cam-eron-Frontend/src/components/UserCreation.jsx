@@ -1,6 +1,6 @@
 import profiles from "../lib/profiles.json"
 
-export default function ProfileSelection({ userSetter }) {
+export default function UserCreation({ userSetter, newUser }) {
     return (
         <div className="min-h-screen flex flex-col items-center p-8">
             <div className="flex flex-row flex-wrap gap-6 justify-center w-full">
@@ -22,9 +22,9 @@ export default function ProfileSelection({ userSetter }) {
                         ))}
                     </div>
                 ))}
-                {/* <div className="flex flex-col gap-3 bg-gray-800 rounded-2xl p-6 w-56 shadow-lg">
-                    <button onClick={userSetter("new", "none")} className="text-lg font-semibold text-white text-center ">Add User</button>
-                </div> */}
+                <div className="flex flex-col gap-3 bg-gray-800 rounded-2xl p-6 w-56 shadow-lg">
+                    <button className="text-lg font-semibold text-white text-center ">Add User</button>
+                </div>
             </div>
         </div>
     )

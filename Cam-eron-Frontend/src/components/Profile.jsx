@@ -1,6 +1,7 @@
 import { useState } from "react";
 import claims from "../lib/claims/claims.json"
 import profiles from "../lib/profiles.json"
+
 export default function Profile({ newCaseProp, editClaim, userId, carId, backProfileButton }) {
     const [expanded, setExpanded] = useState({});
 

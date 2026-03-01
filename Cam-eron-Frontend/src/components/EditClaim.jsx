@@ -5,6 +5,7 @@ import { jsPDF } from 'jspdf'
 import { autoTable } from 'jspdf-autotable'
 
 export default function EditClaim({ userId, claimId, carId, setEditClaim }) {
+    console.log(`userid: ${userId} | carid: ${carId} | claimid: ${claimId}`)
     const originalClaim = claims[userId][profiles[userId].cars[carId].car_model.toLowerCase()][claimId]
 
     const [claimData, setClaimData] = useState({ ...originalClaim })
@@ -25,6 +26,12 @@ export default function EditClaim({ userId, claimId, carId, setEditClaim }) {
         const doc = new jsPDF()
         autoTable(doc, { html: '#details' })
         doc.save(`claim_${claimId}_details.pdf`)
+    }
+
+    const pdfSave = async () => {
+        console.log(details)
+        const response = await fetch(`/update_claim?json=${encodeURIComponent(JSON.stringify(claimData))}&user=${userId}&car=${carId}&claimId=${claimId}`)
+        console.log(response)
     }
 
     return (
@@ -50,6 +57,7 @@ export default function EditClaim({ userId, claimId, carId, setEditClaim }) {
             </table>
             <button onClick={setEditClaim} className="m-8 mb-2 w-1/2 justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none">Back</button>
             <button onClick={pdfClickHandler} className="m-2 w-1/2 justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none">Download PDF</button>
+            <button onClick={pdfSave} className="m-2 w-1/2 justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none">Save</button>
         </div>
     )
 }
