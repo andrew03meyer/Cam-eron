@@ -122,16 +122,18 @@ const getNextIndex = (fromIndex, answers) => {
 
 const autoFillSkipped = (fromIndex, answers) => {
   console.log("AutoFilling...");
+  let skipped = 0;
   const filled = { ...answers };
   for (let i = fromIndex; i < questions.length; i++) {
     const q = questions[i];
     if (q.skipIf?.(filled)) {
+      skipped++;
       filled[q.id] = "no";
     } else {
       break;
     }
   }
-  return filled;
+  return { filled, skipped };
 };
 
 const CardContainer = () => {
@@ -139,6 +141,7 @@ const CardContainer = () => {
     getNextIndex(0, {}),
   );
   const [answers, setAnswers] = useState({});
+  const [skipCount, setSkipCount] = useState(0);
 
   const handleSwipe = (direction, extra_info) => {
     console.log(
@@ -154,11 +157,11 @@ const CardContainer = () => {
         ? { boolean: direction, details: extra_info }
         : direction,
     };
-
-    const filledAnswers = autoFillSkipped(
+    const { filled: filledAnswers, skipped } = autoFillSkipped(
       currentQuestionIndex + 1,
       updatedAnswers,
     );
+    setSkipCount((prev) => prev + skipped);
 
     const nextIndex = getNextIndex(currentQuestionIndex + 1, filledAnswers);
     console.log(filledAnswers + "filled");
@@ -203,8 +206,10 @@ const CardContainer = () => {
       )}
       {currentQuestionIndex == questions.length && (
         <p className="max-w-sm rounded overflow-hidden shadow-lg bg-white m-2 h-max p-2">
-          Thanks for answering all {questions.length} questions! Your claim has
-          been submitted.
+          Thanks for completing your claim! <br />
+          You answered: {questions.length - skipCount} during this claim. This
+          saved you answering {skipCount} questions. Total Questions:{" "}
+          {questions.length}
         </p>
       )}
     </>
