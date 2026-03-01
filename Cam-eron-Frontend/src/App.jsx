@@ -11,6 +11,9 @@ function App() {
   let [editClaimBool, setEditClaim] = useState(false);
   let [claimIdValue, setClaimId] = useState(0)
   let [user, setUser] = useState("")
+  let [car, setCar] = useState("")
+
+  console.log("Vals at render: " + car + " : " + user)
 
   const toggleNewClaim = () => {
     setNewClaim(!newClaimBool)
@@ -30,13 +33,20 @@ function App() {
     console.log(editClaimBool)
   }
 
+  const signIn = (profileId, carId) => {
+    setUser(profileId)
+    setCar(carId)
+    console.log(carId)
+    console.log(user)
+  }
+
 
   return (
     <>
-      <h1 className="text-3xl font-bold w-full text-center text-shadow-lg">Car-Fish</h1>
+      <h1 className="text-3xl font-bold w-full text-center text-shadow-lg my-10">Car-Fish</h1>
       <div className="flex flex-row w-full">
-        {user === "" && <ProfileSelection />}
-        {user !== "" && !newClaimBool && !editClaimBool && <Profile newCaseProp={toggleNewClaim} editClaim={toggleEditClaim} />}
+        {user === "" && <ProfileSelection userSetter={signIn} />}
+        {user !== "" && !newClaimBool && !editClaimBool && <Profile newCaseProp={toggleNewClaim} editClaim={toggleEditClaim} userId={user} carId={car} />}
         {user !== "" && newClaimBool && !editClaimBool && <CardContainer />}
         {user !== "" && editClaimBool && <EditClaim claimId={claimIdValue} setEditClaim={toggleEditClaim} />}
 

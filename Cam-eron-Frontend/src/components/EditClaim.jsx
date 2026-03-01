@@ -2,9 +2,9 @@ import claims from "../lib/claims/claims.json"
 import { jsPDF } from 'jspdf'
 import { autoTable } from 'jspdf-autotable'
 
-export default function EditClaim({ claimId, setEditClaim }) {
+export default function EditClaim({ userId, claimId, setEditClaim }) {
     // var claims = JSON.parse(claims);
-    let idClaim = claims[claimId]
+    let idClaim = claims[userId][claimId]
     console.log("ClaimdID: " + claimId)
     console.log(idClaim)
 

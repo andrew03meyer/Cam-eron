@@ -1,6 +1,7 @@
 import { useState } from "react";
 // import claims from "../lib/claims/claims.json"
-export default function Profile({ newCaseProp, editClaim }) {
+import profiles from "../lib/profiles.json"
+export default function Profile({ newCaseProp, editClaim, userId, carId }) {
     const [expanded, setExpanded] = useState({});
 
     const toggleClaim = (id) => {
@@ -12,6 +13,7 @@ export default function Profile({ newCaseProp, editClaim }) {
         { id: 2, img: "/crash2.jpg", date: "03/05/2024", brief: "Rear bumper damage", status: "Closed" },
         { id: 3, img: "/crash1.jpg", date: "12/09/2024", brief: "Side mirror broken", status: "Open" },
     ];
+    console.log(userId + " : " + carId)
 
     return (
         <div className="flex flex-row w-full min-h-screen p-4 gap-6 w-full">
@@ -22,11 +24,11 @@ export default function Profile({ newCaseProp, editClaim }) {
                 </div>
                 <div class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none">
                     <h2 className="text-xl font-bold w-full text-center text-shadow-lg">About you:</h2>
-                    <p class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none rounded-full m-2">Name: John Deere</p>
-                    <p class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none rounded-full m-2">Age: 23</p>
-                    <p class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none rounded-full m-2">Car Make: VW</p>
-                    <p class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none rounded-full m-2">Car Model: Polo</p>
-                    <p class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none rounded-full m-2">Policy: ABCDE123456789</p>
+                    <p class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none rounded-full m-2">Name: {profiles[userId].name}</p>
+                    <p class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none rounded-full m-2">Age: {profiles[userId].age}</p>
+                    <p class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none rounded-full m-2">Car Make: {profiles[userId].cars[carId].car_make}</p>
+                    <p class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none rounded-full m-2">Car Model: {profiles[userId].cars[carId].car_model}</p>
+                    <p class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none rounded-full m-2">Policy: {profiles[userId].policy}</p>
                 </div>
                 <div className="flex flex-col gap-4 flex-1 w-full">
                     {claims.map(claim => (
