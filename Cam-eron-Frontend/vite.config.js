@@ -10,7 +10,8 @@ export default defineConfig(
       proxy: {
         '/write_to_json': 'http://localhost:5000',
         '/update_claim': 'http://localhost:5000',
-        "/get_claims": 'http://localhost:5000'
+        "/get_claims": 'http://localhost:5000',
+        "/create_user": 'http://localhost:5000'
       }
     }
   }

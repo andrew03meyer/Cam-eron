@@ -22,9 +22,9 @@ export default function ProfileSelection({ userSetter }) {
                         ))}
                     </div>
                 ))}
-                {/* <div className="flex flex-col gap-3 bg-gray-800 rounded-2xl p-6 w-56 shadow-lg">
-                    <button onClick={userSetter("new", "none")} className="text-lg font-semibold text-white text-center ">Add User</button>
-                </div> */}
+                <div className="flex flex-col gap-3 bg-gray-800 rounded-2xl p-6 w-56 shadow-lg">
+                    <button onClick={() => userSetter("new", "none")} className="text-lg font-semibold text-white text-center ">Add User</button>
+                </div>
             </div>
         </div>
     )
