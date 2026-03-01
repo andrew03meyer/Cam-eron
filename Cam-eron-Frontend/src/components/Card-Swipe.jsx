@@ -1,7 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
-function CardSwipe({ question, onSwipe }) {
-  console.log(question);
+function CardSwipe({ question, questionId, extraInfoNeeded, onSwipe }) {
+  const [extraInfoBox, setExtraInfoBox] = useState(false);
+  const [extraInfo, setExtraInfo] = useState("");
+
   const handleMouseDown = (e) => {
     dragRef.current.isDragging = true;
     dragRef.current.startX = e.touches[0].clientX;
@@ -24,7 +26,12 @@ function CardSwipe({ question, onSwipe }) {
       const direction = dx > 0 ? "yes" : "no";
       cardRef.current.style.transform = `translateX(${dx > 0 ? 1000 : -1000}px)`;
       console.log(direction);
-      onSwipe(direction);
+      if (!extraInfoNeeded || extraInfoBox) {
+        onSwipe(direction, extraInfo ? extraInfo : null);
+        setExtraInfoBox(false);
+      } else if (extraInfoNeeded) {
+        setExtraInfoBox(true);
+      }
       cardRef.current.style.transform = `translateX(0) rotate(0deg)`;
     } else {
       // snap back
@@ -36,33 +43,57 @@ function CardSwipe({ question, onSwipe }) {
   const dragRef = useRef({ isDragging: false, startX: 0, currentX: 0 });
   const cardRef = useRef(null);
 
+  //   if (extraInfoBox) {
+  //     return (
+  //       <div>
+  //         <label
+  //           for="visitors"
+  //           class="block mb-2.5 text-sm font-medium text-heading"
+  //         >
+  //           Please provide more information
+  //         </label>
+  //         <input
+  //           type="text"
+  //           id="visitors"
+  //           class="bg-neutral-secondary-medium border border-default-medium text-heading text-base rounded-base focus:ring-brand focus:border-brand block w-full px-4 py-3.5 shadow-xs placeholder:text-body"
+  //           placeholder=""
+  //           required
+  //         />
+  //       </div>
+  //     );
+  //   }
+
   return (
     <>
       <div
-        className="max-w-sm rounded overflow-hidden shadow-lg bg-white m-2 h-max"
+        className="max-w-sm rounded overflow-hidden shadow-lg bg-white m-2 h-max flex"
         onTouchStart={handleMouseDown}
         onTouchMove={handleMove}
         onTouchEnd={handleEnd}
         ref={cardRef}
       >
         <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2">{question}</div>
-          <p className="text-gray-700 text-base">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Voluptatibus quia, nulla! Maiores et perferendis eaque,
-            exercitationem praesentium nihil.
-          </p>
-        </div>
-        <div className="px-6 pt-4 pb-2">
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-            #photography
-          </span>
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-            #travel
-          </span>
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-            #winter
-          </span>
+          <div className="font-bold text-xl mb-2 w-full align-center">
+            {question}
+          </div>
+          {extraInfoNeeded && (
+            <div className="text-base ">
+              <label
+                for="visitors"
+                class="block mb-2.5 text-sm font-medium text-heading"
+              >
+                Please provide more information
+              </label>
+              <input
+                type="text"
+                id="visitors"
+                class="bg-neutral-secondary-medium border border-default-medium text-heading text-base rounded-base focus:ring-brand focus:border-brand block w-full px-4 py-3.5 shadow-xs placeholder:text-body"
+                placeholder=""
+                onChange={(e) => setExtraInfo(e.target.value)}
+                required
+              />
+            </div>
+          )}
         </div>
       </div>
     </>
