@@ -1,5 +1,5 @@
 {
-    "0": {
+    "1": {
         "driver": "yes",
         "vehicle_stationary": "no",
         "public_road": "yes",
@@ -22,7 +22,7 @@
         "head_on": "no",
         "side_on": "no"
     },
-    "1": {
+    "2": {
         "driver": "no",
         "vehicle_stationary": "yes",
         "public_road": "yes",

@@ -1,0 +1,37 @@
+{
+    "john_deere": {
+        "name": "John Deere",
+        "age": "23",
+        "policy": "ABCDE123456789",
+        "cars": [
+            {
+                "car_make": "VW",
+                "car_model": "Polo"
+            },
+            {
+                "car_make": "Ford",
+                "car_model": "Fiesta"
+            }
+        ],
+        "claims": [
+            1,
+            2,
+            3
+        ]
+    },
+    "jane_smith": {
+        "name": "Jane Smith",
+        "age": "34",
+        "policy": "KLMNO112233445",
+        "cars": [
+            {
+                "car_make": "Toyota",
+                "car_model": "Yaris"
+            }
+        ],
+        "claims": [
+            4,
+            5
+        ]
+    }
+}

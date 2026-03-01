@@ -8,9 +8,9 @@ export default function Profile({ newCaseProp, editClaim }) {
     };
 
     const claims = [
-        { id: 1, img: "../../public/crash1.jpg", date: "01/01/2024", brief: "Dinged front-wing", status: "Open" },
-        { id: 2, img: "../../public/crash2.jpg", date: "03/05/2024", brief: "Rear bumper damage", status: "Closed" },
-        { id: 3, img: "../../public/crash1.jpg", date: "12/09/2024", brief: "Side mirror broken", status: "Open" },
+        { id: 1, img: "/crash1.jpg", date: "01/01/2024", brief: "Dinged front-wing", status: "Open" },
+        { id: 2, img: "/crash2.jpg", date: "03/05/2024", brief: "Rear bumper damage", status: "Closed" },
+        { id: 3, img: "/crash1.jpg", date: "12/09/2024", brief: "Side mirror broken", status: "Open" },
     ];
 
     return (
