@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 function CardSwipe({ question, questionId, extraInfoNeeded, onSwipe }) {
   const [extraInfoBox, setExtraInfoBox] = useState(false);
   const [extraInfo, setExtraInfo] = useState("");
+  const [pendingDirection, setPendingDirection] = useState(null);
 
   const handleMouseDown = (e) => {
     dragRef.current.isDragging = true;
@@ -20,24 +21,32 @@ function CardSwipe({ question, questionId, extraInfoNeeded, onSwipe }) {
   const handleEnd = () => {
     dragRef.current.isDragging = false;
     const dx = dragRef.current.currentX;
-    console.log(dx);
-    if (Math.abs(dx) > 60) {
-      // fly off screen
+
+    if (Math.abs(dx) > 120) {
       const direction = dx > 0 ? "yes" : "no";
-      cardRef.current.style.transform = `translateX(${dx > 0 ? 1000 : -1000}px)`;
-      console.log(direction);
-      if (!extraInfoNeeded || extraInfoBox) {
-        onSwipe(direction, extraInfo ? extraInfo : null);
-        setExtraInfoBox(false);
-      } else if (extraInfoNeeded) {
+
+      if (extraInfoNeeded && !extraInfoBox) {
+        // store direction, show input, snap card back
+        setPendingDirection(direction);
         setExtraInfoBox(true);
+        cardRef.current.style.transition = "transform 0.3s ease";
+        cardRef.current.style.transform = "translateX(0) rotate(0deg)";
+      } else {
+        // no extra info needed, just swipe
+        cardRef.current.style.transform = `translateX(${dx > 0 ? 1000 : -1000}px)`;
+        onSwipe(direction, null);
       }
-      cardRef.current.style.transform = `translateX(0) rotate(0deg)`;
     } else {
-      // snap back
-      cardRef.current.style.transition = `transform 0.3s ease`;
-      cardRef.current.style.transform = `translateX(0) rotate(0deg)`;
+      cardRef.current.style.transition = "transform 0.3s ease";
+      cardRef.current.style.transform = "translateX(0) rotate(0deg)";
     }
+  };
+
+  const handleConfirm = () => {
+    onSwipe(pendingDirection, extraInfo || null);
+    setExtraInfoBox(false);
+    setExtraInfo("");
+    setPendingDirection(null);
   };
 
   const dragRef = useRef({ isDragging: false, startX: 0, currentX: 0 });
@@ -76,22 +85,27 @@ function CardSwipe({ question, questionId, extraInfoNeeded, onSwipe }) {
           <div className="font-bold text-xl mb-2 w-full align-center">
             {question}
           </div>
-          {extraInfoNeeded && (
-            <div className="text-base ">
-              <label
-                for="visitors"
-                class="block mb-2.5 text-sm font-medium text-heading"
-              >
+          {extraInfoBox && (
+            <div className="mt-4">
+              <label className="block mb-2 text-sm font-medium text-gray-700">
                 Please provide more information
               </label>
               <input
                 type="text"
-                id="visitors"
-                class="bg-neutral-secondary-medium border border-default-medium text-heading text-base rounded-base focus:ring-brand focus:border-brand block w-full px-4 py-3.5 shadow-xs placeholder:text-body"
+                className="border border-gray-300 rounded w-full px-4 py-3 mb-3"
                 placeholder=""
                 onChange={(e) => setExtraInfo(e.target.value)}
-                required
+                onTouchStart={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
+                onTouchEnd={(e) => e.stopPropagation()}
               />
+              <button
+                onClick={handleConfirm}
+                onTouchEnd={(e) => e.stopPropagation()}
+                className="bg-blue-500 text-white px-4 py-2 rounded w-full"
+              >
+                Continue
+              </button>
             </div>
           )}
         </div>

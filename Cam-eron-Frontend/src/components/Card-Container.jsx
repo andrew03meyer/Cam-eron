@@ -1,28 +1,187 @@
 import { useState } from "react";
 import { CardSwipe } from "./Card-Swipe";
 
-const questions = [
-  { id: 1, question: "Did another vehicle hit you?", extraInfoNeeded: false },
-  { id: 2, question: "Were there any witnesses?", extraInfoNeeded: true },
-];
+import { questions } from "../lib/claims/questions";
+
+// const questions = [
+//   {
+//     id: "driver",
+//     question: "Were you the driver of the vehicle?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "vehicle_stationary",
+//     question: "Was your vehicle stationary at the time?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "public_road",
+//     question: "Did the incident occur on a public road?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "car_park",
+//     question: "Did the incident occur in a car park?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "junction",
+//     question: "Did the incident occur at a junction?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "motorway",
+//     question: "Did the incident occur on a motorway?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "dark",
+//     question: "Was it dark at the time of the incident?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "weather_affecting_visibility",
+//     question: "Was weather affecting visibility?",
+//     extraInfoNeeded: true,
+//   },
+//   {
+//     id: "road_wet_or_icy",
+//     question: "Was the road wet or icy?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "roadworks",
+//     question: "Were there roadworks present?",
+//     extraInfoNeeded: true,
+//   },
+//   {
+//     id: "another_vehicle",
+//     question: "Was another vehicle involved?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "more_than_one_vehicle",
+//     question: "Were more than one other vehicle involved?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "other_vehicle_stationary",
+//     question: "Was the other vehicle stationary?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "other_vehicle_commercial",
+//     question: "Was the other vehicle a commercial vehicle?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "pedestrian",
+//     question: "Was a pedestrian involved?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "cyclist",
+//     question: "Was a cyclist involved?",
+//     extraInfoNeeded: false,
+//   },
+//   { id: "animal", question: "Was an animal involved?", extraInfoNeeded: true },
+//   {
+//     id: "stationary_object",
+//     question: "Did you hit a stationary object?",
+//     extraInfoNeeded: true,
+//   },
+//   {
+//     id: "rear_end_shunt",
+//     question: "Was it a rear-end shunt?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "head_on",
+//     question: "Was it a head-on collision?",
+//     extraInfoNeeded: false,
+//   },
+//   {
+//     id: "side_on",
+//     question: "Was it a side-on collision?",
+//     extraInfoNeeded: false,
+//   },
+// ];
+
+const getNextIndex = (fromIndex, answers) => {
+  console.log("Getting Next Index!");
+  for (let i = fromIndex; i < questions.length; i++) {
+    const q = questions[i];
+    console.log(q);
+    if (q.skipIf?.(answers)) {
+      console.log("Skipping: ->  " + q);
+      continue;
+    }
+    return i;
+  }
+};
+
+const autoFillSkipped = (fromIndex, answers) => {
+  console.log("AutoFilling...");
+  const filled = { ...answers };
+  for (let i = fromIndex; i < questions.length; i++) {
+    const q = questions[i];
+    if (q.skipIf?.(filled)) {
+      filled[q.id] = "no";
+    } else {
+      break;
+    }
+  }
+  return filled;
+};
 
 const CardContainer = () => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() =>
+    getNextIndex(0, {}),
+  );
+  const [answers, setAnswers] = useState({});
 
   const handleSwipe = (direction, extra_info) => {
-    var new_answer = {};
-    console.log("Extra info: " + extra_info);
-    if (!extra_info || extra_info.length == 0) {
-      new_answer = { id: questions[currentQuestionIndex].id, direction };
-    } else {
-      new_answer = {
-        id: questions[currentQuestionIndex].id,
-        output: { boolean: direction, details: extra_info },
-      };
-    }
-    setAnswers((prev) => [...prev, new_answer]);
-    setCurrentQuestionIndex((prev) => prev + 1);
+    console.log(
+      "Swiped:",
+      direction,
+      "on question:",
+      questions[currentQuestionIndex].id,
+    );
+
+    const updatedAnswers = {
+      ...answers,
+      [questions[currentQuestionIndex].id]: extra_info
+        ? { boolean: direction, details: extra_info }
+        : direction,
+    };
+
+    const filledAnswers = autoFillSkipped(
+      currentQuestionIndex + 1,
+      updatedAnswers,
+    );
+
+    const nextIndex = getNextIndex(currentQuestionIndex + 1, filledAnswers);
+    console.log(filledAnswers + "filled");
+    console.log(nextIndex + "Next");
+
+    setAnswers(filledAnswers);
+    setCurrentQuestionIndex(nextIndex ?? questions.length);
+
+    // var new_answer = {};
+    // console.log("Extra info: " + extra_info);
+    // if (!extra_info || extra_info.length == 0) {
+    //   new_answer = { id: questions[currentQuestionIndex].id, direction };
+    // } else {
+    //   new_answer = {
+    //     id: questions[currentQuestionIndex].id,
+    //     output: { boolean: direction, details: extra_info },
+    //   };
+    // }
+    // setAnswers((prev) => ({
+    //   ...prev,
+    //   [questions[currentQuestionIndex].id]: direction,
+    // }));
+    // setCurrentQuestionIndex((prev) => prev + 1);
   };
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -35,6 +194,7 @@ const CardContainer = () => {
     <>
       {currentQuestionIndex != questions.length && (
         <CardSwipe
+          key={currentQuestion.id}
           onSwipe={handleSwipe}
           question={currentQuestion.question}
           questionId={currentQuestion.id}
