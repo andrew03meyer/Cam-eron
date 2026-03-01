@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CardSwipe } from "./Card-Swipe";
 
 import { questions } from "../lib/claims/questions";
@@ -134,7 +134,7 @@ const autoFillSkipped = (fromIndex, answers) => {
   return filled;
 };
 
-const CardContainer = () => {
+const CardContainer = ({ userId, carId, setNewClaim }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() =>
     getNextIndex(0, {}),
   );
@@ -186,9 +186,30 @@ const CardContainer = () => {
 
   const currentQuestion = questions[currentQuestionIndex];
 
-  if (currentQuestionIndex == questions.length) {
-    console.log(answers);
+  // if (currentQuestionIndex == questions.length) {
+  //   console.log(answers);
+  // }
+
+  const addDefaults = () => {
+    let defaults = {
+      "img": "",
+      "date": "",
+      "brief": "",
+      "status": ""
+    }
+    return { ...defaults, ...answers }
   }
+  useEffect(() => {
+    if (currentQuestionIndex !== questions.length) return
+
+    const submitClaim = async () => {
+      const answersWithDef = addDefaults()
+      const response = await fetch(`/write_to_json?json=${encodeURIComponent(JSON.stringify(answersWithDef))}&user=${userId}&car=${carId}`)
+      console.log(response)
+    }
+
+    submitClaim()
+  }, [currentQuestionIndex])
 
   return (
     <>
@@ -202,10 +223,14 @@ const CardContainer = () => {
         />
       )}
       {currentQuestionIndex == questions.length && (
-        <p className="max-w-sm rounded overflow-hidden shadow-lg bg-white m-2 h-max p-2">
-          Thanks for answering all {questions.length} questions! Your claim has
-          been submitted.
-        </p>
+        <div>
+          <p className="max-w-sm rounded overflow-hidden shadow-lg bg-white m-2 h-max p-2">
+            Thanks for answering all {questions.length} questions! Your claim has
+            been submitted.
+
+          </p>
+          <button onClick={setNewClaim} className="m-8 mb-2 w-1/2 justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none">Back</button>
+        </div>
       )}
     </>
   );
