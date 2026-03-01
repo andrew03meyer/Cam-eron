@@ -195,48 +195,56 @@ const CardContainer = ({ userId, carId, setNewClaim }) => {
 
   const addDefaults = () => {
     let defaults = {
-      "img": "",
-      "date": "",
-      "brief": "",
-      "status": ""
-    }
-    return { ...defaults, ...answers }
-  }
+      img: "",
+      date: "",
+      brief: "",
+      status: "",
+    };
+    return { ...defaults, ...answers };
+  };
   useEffect(() => {
-    if (currentQuestionIndex !== questions.length) return
+    if (currentQuestionIndex !== questions.length) return;
 
     const submitClaim = async () => {
-      const answersWithDef = addDefaults()
-      const response = await fetch(`/write_to_json?json=${encodeURIComponent(JSON.stringify(answersWithDef))}&user=${userId}&car=${carId}`)
-      console.log(response)
-    }
+      const answersWithDef = addDefaults();
+      const response = await fetch(
+        `/write_to_json?json=${encodeURIComponent(JSON.stringify(answersWithDef))}&user=${userId}&car=${carId}`,
+      );
+      console.log(response);
+    };
 
-    submitClaim()
-  }, [currentQuestionIndex])
+    submitClaim();
+  }, [currentQuestionIndex]);
 
   return (
     <>
-      {currentQuestionIndex != questions.length && (
-        <CardSwipe
-          key={currentQuestion.id}
-          onSwipe={handleSwipe}
-          question={currentQuestion.question}
-          questionId={currentQuestion.id}
-          extraInfoNeeded={currentQuestion.extraInfoNeeded}
-        />
-      )}
-      {currentQuestionIndex == questions.length && (
-        <div>
-          <p className="max-w-sm rounded overflow-hidden shadow-lg bg-white m-2 h-max p-2">
-            Thanks for completing your claim! <br />
-            You answered: {questions.length - skipCount} during this claim. This
-            saved you answering {skipCount} questions. Total Questions:{" "}
-            {questions.length}
-
-          </p>
-          <button onClick={setNewClaim} className="m-8 mb-2 w-1/2 justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none">Back</button>
-        </div>
-      )}
+      <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+        {currentQuestionIndex != questions.length && (
+          <CardSwipe
+            key={currentQuestion.id}
+            onSwipe={handleSwipe}
+            question={currentQuestion.question}
+            questionId={currentQuestion.id}
+            extraInfoNeeded={currentQuestion.extraInfoNeeded}
+          />
+        )}
+        {currentQuestionIndex == questions.length && (
+          <div>
+            <p className="max-w-sm rounded overflow-hidden shadow-lg bg-white m-2 h-max p-2">
+              Thanks for completing your claim! <br />
+              You answered: {questions.length - skipCount} during this claim.
+              This saved you answering {skipCount} questions. Total Questions:{" "}
+              {questions.length}
+            </p>
+            <button
+              onClick={setNewClaim}
+              className="m-8 mb-2 w-1/2 justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none"
+            >
+              Back
+            </button>
+          </div>
+        )}
+      </div>
     </>
   );
 };

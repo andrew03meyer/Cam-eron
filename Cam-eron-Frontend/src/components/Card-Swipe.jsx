@@ -73,44 +73,63 @@ function CardSwipe({ question, questionId, extraInfoNeeded, onSwipe }) {
   //   }
 
   return (
-    <>
-      <div
-        className="max-w-sm rounded overflow-hidden shadow-lg bg-white m-2 h-max flex"
-        onTouchStart={handleMouseDown}
-        onTouchMove={handleMove}
-        onTouchEnd={handleEnd}
-        ref={cardRef}
-      >
-        <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2 w-full align-center">
-            {question}
-          </div>
-          {extraInfoBox && (
-            <div className="mt-4">
-              <label className="block mb-2 text-sm font-medium text-gray-700">
-                Please provide more information
-              </label>
-              <input
-                type="text"
-                className="border border-gray-300 rounded w-full px-4 py-3 mb-3"
-                placeholder=""
-                onChange={(e) => setExtraInfo(e.target.value)}
-                onTouchStart={(e) => e.stopPropagation()}
-                onTouchMove={(e) => e.stopPropagation()}
-                onTouchEnd={(e) => e.stopPropagation()}
-              />
-              <button
-                onClick={handleConfirm}
-                onTouchEnd={(e) => e.stopPropagation()}
-                className="bg-blue-500 text-white px-4 py-2 rounded w-full"
-              >
-                Continue
-              </button>
-            </div>
-          )}
+    <div
+      className="w-80 bg-white rounded-3xl shadow-2xl overflow-hidden"
+      onTouchStart={handleMouseDown}
+      onTouchMove={handleMove}
+      onTouchEnd={handleEnd}
+      ref={cardRef}
+    >
+      {/* Coloured top bar */}
+      <div className="h-2 bg-purple-600 w-full" />
+
+      <div className="p-8">
+        {/* Icon */}
+        <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-6">
+          <span className="text-purple-600 text-xl">?</span>
         </div>
+
+        {/* Question */}
+        <h2 className="text-2xl font-bold text-gray-800 mb-2 leading-snug">
+          {question}
+        </h2>
+        <p className="text-sm text-gray-400 mb-6">Swipe to answer</p>
+
+        {/* Swipe hints */}
+        {!extraInfoBox && (
+          <div className="flex justify-between mt-4">
+            <span className="text-red-400 font-semibold text-sm">← No</span>
+            <span className="text-green-400 font-semibold text-sm">Yes →</span>
+          </div>
+        )}
+
+        {/* Extra info box */}
+        {extraInfoBox && (
+          <div>
+            {" "}
+            <label className="block mb-2 text-sm font-medium text-gray-600">
+              Please provide more detail
+            </label>
+            <input
+              type="text"
+              className="border border-gray-200 rounded-xl w-full px-4 py-3 mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+              placeholder="Type here..."
+              onChange={(e) => setExtraInfo(e.target.value)}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
+            />
+            <button
+              onClick={handleConfirm}
+              onTouchEnd={(e) => e.stopPropagation()}
+              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-xl w-full font-semibold text-sm transition-colors"
+            >
+              Continue →
+            </button>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }
 
