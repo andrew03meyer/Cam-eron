@@ -31,6 +31,7 @@ function App() {
   const signIn = (profileId, carId) => {
     setUser(profileId)
     setCar(carId)
+    console.log("App.jsx:  ", carId, " | ", profileId)
   }
 
   const backProfile = () => {
@@ -51,10 +52,10 @@ function App() {
       <h1 className="text-3xl font-bold w-full text-center text-shadow-lg my-10">Car-Fish</h1>
       <div className="flex flex-row w-full">
         {user === "" && <ProfileSelection userSetter={signIn} />}
-        {/* {user == "new" && <UserCreation userSetter={signIn} />} */}
-        {user !== "" && !newClaimBool && !editClaimBool && <Profile newCaseProp={toggleNewClaim} editClaim={toggleEditClaim} userId={user} carId={car} backProfileButton={backProfile} />}
-        {user !== "" && newClaimBool && !editClaimBool && <CardContainer userId={user} carId={car} setNewClaim={toggleNewClaim} />}
-        {user !== "" && editClaimBool && <EditClaim claimId={claimIdValue} setEditClaim={toggleEditClaim} userId={user} carId={car} />}
+        {user === "new" && <UserCreation userSetter={signIn} />}
+        {user !== "" && user !== "new" && !newClaimBool && !editClaimBool && <Profile newCaseProp={toggleNewClaim} editClaim={toggleEditClaim} userId={user} carId={car} backProfileButton={backProfile} />}
+        {user !== "" && user !== "new" && newClaimBool && !editClaimBool && <CardContainer userId={user} carId={car} setNewClaim={toggleNewClaim} />}
+        {user !== "" && user !== "new" && editClaimBool && <EditClaim claimId={claimIdValue} setEditClaim={toggleEditClaim} userId={user} carId={car} />}
 
       </div>
     </>
