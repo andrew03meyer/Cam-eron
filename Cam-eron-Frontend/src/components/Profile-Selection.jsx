@@ -1,7 +1,6 @@
 import profiles from "../lib/profiles.json"
 
 export default function ProfileSelection({ userSetter }) {
-    console.log(profiles["john_deere"].cars[0].car_model)
     return (
         <div className="min-h-screen flex flex-col items-center p-8">
             <div className="flex flex-row flex-wrap gap-6 justify-center w-full">
